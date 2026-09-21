@@ -39,6 +39,13 @@ export const Route = createFileRoute("/")({
 });
 
 
+const stack = [
+  ["Frontend", "React.js", "Next.js", "Angular", "React Native"],
+  ["Backend", "Node.js", ".NET"],
+  ["Databases", "PostgreSQL", "MongoDB"],
+  ["Platform", "Shopify"],
+];
+
 const reasons = [
   ["01", "Reliable by design", "Clear communication, considered architecture, and dependable delivery from first conversation to release."],
   ["02", "Versatile technology", "The right stack for the work—not a one-size-fits-all approach."],
@@ -48,7 +55,7 @@ const reasons = [
 ];
 
 function Index() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  // navigation state lives in SiteHeader
   const [sent, setSent] = useState(false);
 
   const submitForm = (event: FormEvent<HTMLFormElement>) => {
@@ -182,13 +189,7 @@ function Index() {
         </section>
       </main>
 
-      <footer className="section-rule py-10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-7 px-5 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-          <div className="font-display text-lg font-semibold">Technologics<span className="text-primary">.</span></div>
-          <div className="flex gap-6 text-sm text-muted-foreground"><span>LinkedIn</span><span>Instagram</span><span>GitHub</span></div>
-          <p className="text-xs text-muted-foreground">© 2026 Technologics. All rights reserved.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
@@ -197,9 +198,10 @@ function SectionHeading({ number, eyebrow, title, text }: { number: string; eyeb
   return <div className="grid gap-6 lg:grid-cols-[0.7fr_1.3fr]"><p className="text-xs font-semibold uppercase text-primary">{number} / {eyebrow}</p><div><h2 className="max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">{title}</h2>{text && <p className="mt-5 max-w-2xl leading-7 text-muted-foreground">{text}</p>}</div></div>;
 }
 
-function ProjectCard({ index, title, type, status, visual }: { index: string; title: string; type: string; status?: string; visual: string }) {
+function ProjectCard({ project }: { project: Project }) {
+  const { slug, index, title, type, status, visual } = project;
   return (
-    <article className="group bg-background p-4">
+    <Link to="/projects/$slug" params={{ slug }} className="group bg-background p-4 transition-colors hover:bg-surface">
       <div className="relative aspect-[4/3] overflow-hidden bg-surface-strong">
         <div className="grid-lines absolute inset-0 opacity-50" />
         <div className="absolute inset-8 border border-line transition-transform duration-500 group-hover:-translate-y-1">
@@ -211,7 +213,7 @@ function ProjectCard({ index, title, type, status, visual }: { index: string; ti
         {visual === "mobile" && <div className="absolute left-1/2 top-1/2 h-4/5 w-2/5 -translate-x-1/2 -translate-y-1/2 border-4 border-background bg-card p-2 shadow-2xl"><div className="h-full bg-brand-soft"><div className="mx-auto mt-3 h-1 w-8 bg-primary" /><div className="mx-3 mt-8 h-2/5 bg-primary/20" /></div></div>}
       </div>
       <div className="flex items-start justify-between gap-4 px-2 pb-3 pt-6"><div><div className="flex items-center gap-3"><span className="text-xs text-muted-foreground">{index}</span><h3 className="text-xl font-semibold">{title}</h3></div><p className="mt-2 text-sm text-muted-foreground">{type}</p></div>{status && <span className="shrink-0 border border-primary/40 bg-brand-soft px-2 py-1 text-[10px] font-semibold uppercase text-primary">{status}</span>}</div>
-    </article>
+    </Link>
   );
 }
 
