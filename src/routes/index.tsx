@@ -1,31 +1,20 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import {
   ArrowDownRight,
   ArrowRight,
-  Braces,
   CheckCircle2,
-  Code2,
-  Database,
   Globe2,
-  Layers3,
-  LockKeyhole,
   Mail,
   MapPin,
-  Menu,
-  MessagesSquare,
-  MonitorSmartphone,
   Phone,
-  ServerCog,
-  ShieldCheck,
-  ShoppingBag,
-  Smartphone,
   Sparkles,
-  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { services, projects, type Project } from "@/content/site";
 import heroImage from "@/assets/technologics-hero.jpg";
 
 export const Route = createFileRoute("/")({
@@ -49,32 +38,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const services = [
-  { icon: ShoppingBag, title: "Shopify & E-commerce", text: "High-converting storefronts, custom themes, integrations, and scalable commerce experiences." },
-  { icon: Smartphone, title: "Mobile App Development", text: "Cross-platform React Native applications engineered for speed, usability, and growth." },
-  { icon: MonitorSmartphone, title: "Web Development", text: "Responsive products built with React.js, Next.js, and Angular for modern business needs." },
-  { icon: Layers3, title: "Full-Stack Development", text: "End-to-end MEAN and MERN applications with cohesive architecture from interface to database." },
-  { icon: Code2, title: ".NET Development", text: "Robust business applications and backend systems built for performance and maintainability." },
-  { icon: MessagesSquare, title: "CRM Applications", text: "Purpose-built platforms that organize customer operations, workflows, and business insight." },
-  { icon: LockKeyhole, title: "Authentication Systems", text: "Secure authorization, account management, and role-based access for sensitive applications." },
-  { icon: Braces, title: "Custom Web Applications", text: "Tailored digital tools that turn complex processes into clear, dependable experiences." },
-];
-
-const stack = [
-  ["Frontend", "React.js", "Next.js", "Angular", "React Native"],
-  ["Backend", "Node.js", ".NET"],
-  ["Databases", "PostgreSQL", "MongoDB"],
-  ["Platform", "Shopify"],
-];
-
-const projects = [
-  { index: "01", title: "Fameo", type: "React Native mobile app", status: "Launching soon", visual: "mobile" },
-  { index: "02", title: "Modern Retail", type: "Shopify commerce experience", visual: "retail" },
-  { index: "03", title: "Home & Living", type: "E-commerce storefront", visual: "home" },
-  { index: "04", title: "Premium Goods", type: "Direct-to-consumer platform", visual: "premium" },
-  { index: "05", title: "Global Catalogue", type: "Multi-market Shopify build", visual: "global" },
-  { index: "06", title: "Commerce Operations", type: "Custom admin experience", visual: "ops" },
-];
 
 const reasons = [
   ["01", "Reliable by design", "Clear communication, considered architecture, and dependable delivery from first conversation to release."],
@@ -96,35 +59,7 @@ function Index() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-background/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
-          <a href="#top" className="flex items-center gap-3" aria-label="Technologics home">
-            <span className="grid size-9 place-items-center border border-primary bg-brand-soft font-display text-sm font-bold text-primary">T</span>
-            <span className="font-display text-lg font-semibold">Technologics</span>
-          </a>
-          <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex" aria-label="Primary navigation">
-            <a className="transition-colors hover:text-foreground" href="#services">Services</a>
-            <a className="transition-colors hover:text-foreground" href="#work">Work</a>
-            <a className="transition-colors hover:text-foreground" href="#about">About</a>
-            <a className="transition-colors hover:text-foreground" href="#contact">Contact</a>
-          </nav>
-          <div className="hidden md:block">
-            <Button asChild><a href="#contact">Start a project <ArrowRight /></a></Button>
-          </div>
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation">
-            {menuOpen ? <X /> : <Menu />}
-          </Button>
-        </div>
-        {menuOpen && (
-          <nav className="border-t border-line bg-background px-5 py-5 md:hidden" aria-label="Mobile navigation">
-            <div className="mx-auto grid max-w-7xl gap-4 text-base">
-              {[["Services", "#services"], ["Work", "#work"], ["About", "#about"], ["Contact", "#contact"]].map(([label, href]) => (
-                <a key={href} href={href} onClick={() => setMenuOpen(false)} className="py-1 text-muted-foreground">{label}</a>
-              ))}
-            </div>
-          </nav>
-        )}
-      </header>
+      <SiteHeader />
 
       <main id="top">
         <section className="relative flex min-h-[760px] items-end overflow-hidden pt-20 md:min-h-[92vh]">
@@ -151,13 +86,17 @@ function Index() {
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
             <SectionHeading number="01" eyebrow="Capabilities" title="One studio. Complete digital delivery." text="From first architecture decisions to final production detail, we bring the full product stack together." />
             <div className="mt-14 grid border-l border-t border-line sm:grid-cols-2 lg:grid-cols-4">
-              {services.map(({ icon: Icon, title, text }, index) => (
-                <article key={title} className="group min-h-72 border-b border-r border-line bg-surface p-7 transition-colors hover:bg-surface-strong">
+              {services.map(({ slug, icon: Icon, title, short }, index) => (
+                <Link key={slug} to="/services/$slug" params={{ slug }} className="group min-h-72 border-b border-r border-line bg-surface p-7 transition-colors hover:bg-surface-strong">
                   <div className="flex items-start justify-between"><Icon className="size-6 text-primary" /><span className="text-xs text-muted-foreground">0{index + 1}</span></div>
                   <h3 className="mt-14 text-xl font-semibold">{title}</h3>
-                  <p className="mt-4 text-sm leading-6 text-muted-foreground">{text}</p>
-                </article>
+                  <p className="mt-4 text-sm leading-6 text-muted-foreground">{short}</p>
+                  <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary">View service <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></span>
+                </Link>
               ))}
+            </div>
+            <div className="mt-10">
+              <Button variant="outline" asChild><Link to="/services">See all services <ArrowRight /></Link></Button>
             </div>
           </div>
         </section>
@@ -177,7 +116,10 @@ function Index() {
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
             <SectionHeading number="02" eyebrow="Selected work" title="Built for real-world momentum." text="A selection of mobile and commerce work. Client identities remain private by design." />
             <div className="mt-14 grid gap-px bg-line md:grid-cols-2 lg:grid-cols-3">
-              {projects.map((project) => <ProjectCard key={project.index} {...project} />)}
+              {projects.map((project) => <ProjectCard key={project.slug} project={project} />)}
+            </div>
+            <div className="mt-10">
+              <Button variant="outline" asChild><Link to="/projects">View all work <ArrowRight /></Link></Button>
             </div>
             <div className="mt-10 grid items-center gap-8 border border-line bg-brand-soft p-7 md:grid-cols-[1fr_2fr] lg:p-10">
               <div><p className="text-xs font-semibold uppercase text-primary">Industry experience</p><h3 className="mt-3 text-2xl font-semibold">Domain depth, handled discreetly.</h3></div>
